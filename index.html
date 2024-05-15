@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button id="startGame">新开一局</button>
+    <button id="chosePrivateCard">发牌</button>
+    <button id="chosePublicCard">发公共牌</button>
+    <button id="endGame">结束游戏</button>
+    <div id="showPrivate">
+        <label>底牌：</label>
+        <div id="privateCard"></div>
+    </div>
+    <div id="showPublic">
+        <label>公共牌：</label>
+        <div id="publicCard"></div>
+    </div>
+
+    <script src="./index.js"></script>
+    <script>
+        let chosePrivateCard, chosePublicCard, turn = 1
+        document.addEventListener('click', (e) => {
+            if (e.target.id === 'startGame') {
+                const actions = createNewGame()
+                chosePrivateCard = actions.chosePrivateCard
+                chosePublicCard = actions.chosePublicCard
+            }
+            else if (e.target.id === 'chosePrivateCard') {
+                const cards = chosePrivateCard?.() || []
+                document.getElementById('privateCard').innerHTML = cards.join(' ')
+            }
+            else if (e.target.id === 'chosePublicCard') {
+                const cards = chosePublicCard?.(turn) || []
+                turn++
+                document.getElementById('publicCard').innerHTML += cards.join(' ')
+            }
+            else if (e.target.id === 'endGame') {
+                turn = 1
+                document.getElementById('privateCard').innerHTML = ''
+                document.getElementById('publicCard').innerHTML = ''
+                chosePrivateCard = void 0
+                chosePublicCard = void 0
+            }
+        })
+    </script>
+</body>
+</html>
